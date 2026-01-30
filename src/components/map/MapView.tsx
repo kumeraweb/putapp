@@ -115,8 +115,8 @@ export default function MapView() {
   }, [])
 
   return (
-    <div className="flex h-screen w-screen flex-col overflow-hidden bg-neutral-50">
-      <header className="flex h-[10%] min-h-[56px] items-center justify-between px-4">
+    <div className="flex h-[100dvh] w-screen flex-col overflow-hidden bg-neutral-50">
+      <header className="flex flex-none basis-[10%] items-center justify-between px-4">
         <div className="flex items-center gap-3 rounded-full bg-white/80 px-3 py-2 shadow-sm backdrop-blur">
           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-neutral-900 text-sm font-semibold text-white">
             P
@@ -150,7 +150,7 @@ export default function MapView() {
         </div>
       </header>
 
-      <div className="relative h-[70%] w-full">
+      <div className="relative flex-none basis-[70%] w-full min-h-0">
         <div ref={mapContainerRef} className="h-full w-full" />
       </div>
 
@@ -208,7 +208,7 @@ export default function MapView() {
         }
       `}</style>
 
-      <div className="relative h-[22%] min-h-[140px] w-full">
+      <div className="relative flex-none basis-[20%] min-h-0 w-full px-4 pb-3">
         {selectedModel ? (
           <div className="h-full w-full">
             <ProfileCard
