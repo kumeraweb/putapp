@@ -24,9 +24,9 @@ export default function ProfileCard({ name, active, description }: ProfileCardPr
   }, [])
 
   return (
-    <div className="h-full w-full overflow-hidden bg-white p-4 shadow-2xl sm:p-5">
-      <div className="flex h-full items-center gap-4">
-        <div className="relative h-full w-1/2 overflow-hidden rounded-2xl bg-neutral-100">
+    <div className="h-full w-full overflow-hidden bg-white p-[0.9rem] shadow-2xl">
+      <div className="flex h-full items-center gap-[0.9rem]">
+        <div className="relative h-full w-1/2 overflow-hidden rounded-[1rem] bg-neutral-100">
           <div
             className="h-full w-full transition-opacity duration-500"
             style={{ backgroundImage: GALLERY[activeIndex] }}
@@ -43,23 +43,23 @@ export default function ProfileCard({ name, active, description }: ProfileCardPr
           </div>
         </div>
 
-        <div className="flex h-full w-1/2 flex-col justify-between">
-          <div className="space-y-1">
-            <div className="text-lg font-semibold text-neutral-900">{name}</div>
+        <div className="flex h-full w-1/2 flex-col justify-between gap-[0.5rem]">
+          <div className="space-y-[0.2rem]">
+            <div className="text-[1rem] font-semibold text-neutral-900">{name}</div>
             <div
-              className={`text-xs font-semibold uppercase tracking-wide ${
+              className={`text-[0.7rem] font-semibold uppercase tracking-wide ${
                 active ? 'text-emerald-600' : 'text-rose-600'
               }`}
             >
               {active ? 'Disponible' : 'No disponible'}
             </div>
           </div>
-          <p className="max-h-8 overflow-hidden text-xs leading-snug text-neutral-600">
+          <p className="max-h-[2.4rem] overflow-hidden text-[0.75rem] leading-snug text-neutral-600">
             {description}
           </p>
           <button
             type="button"
-            className="self-start rounded-full bg-emerald-500 px-4 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-emerald-600"
+            className="rounded-full bg-emerald-500 px-[1rem] py-[0.45rem] text-[0.75rem] font-semibold text-white shadow-sm transition hover:bg-emerald-600"
           >
             WhatsApp
           </button>
