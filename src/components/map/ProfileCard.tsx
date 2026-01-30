@@ -54,7 +54,7 @@ export default function ProfileCard({ name, active, description }: ProfileCardPr
               {active ? 'Disponible' : 'No disponible'}
             </div>
           </div>
-          <p className="max-h-[2.4rem] overflow-hidden text-[0.75rem] leading-snug text-neutral-600">
+          <p className="max-h-[1.4rem] overflow-hidden text-[0.25rem] leading-snug text-neutral-600">
             {description}
           </p>
           <button
