@@ -57,6 +57,7 @@ export default function MapView() {
 
   useEffect(() => {
     let isCancelled = false
+    let resizeObserver: ResizeObserver | null = null
 
     const initMap = async () => {
       if (!mapContainerRef.current || mapRef.current) return
@@ -79,6 +80,11 @@ export default function MapView() {
       })
       requestAnimationFrame(() => mapRef.current?.resize())
 
+      resizeObserver = new ResizeObserver(() => {
+        mapRef.current?.resize()
+      })
+      resizeObserver.observe(mapContainerRef.current)
+
       // Add mock model pins (active and inactive for visual testing).
       markersRef.current = MOCK_MODELS.map((model) => {
         const el = document.createElement('div')
@@ -97,14 +103,10 @@ export default function MapView() {
 
     initMap()
 
-    const handleResize = () => {
-      mapRef.current?.resize()
-    }
-    window.addEventListener('resize', handleResize)
-
     return () => {
       isCancelled = true
-      window.removeEventListener('resize', handleResize)
+      resizeObserver?.disconnect()
+      resizeObserver = null
       markersRef.current.forEach((marker) => marker.remove())
       markersRef.current = []
       mapRef.current?.remove()
@@ -113,44 +115,44 @@ export default function MapView() {
   }, [])
 
   return (
-    <div className="relative h-screen w-screen overflow-hidden">
-      <div ref={mapContainerRef} className="h-full w-full" />
-
-      <header className="absolute left-0 right-0 top-0 z-20">
-        <div className="mx-auto flex w-full max-w-5xl items-center justify-between px-4 py-3">
-          <div className="flex items-center gap-3 rounded-full bg-white/70 px-3 py-2 shadow-sm backdrop-blur">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-neutral-900 text-sm font-semibold text-white">
-              P
-            </div>
-            <nav className="flex items-center gap-4 text-sm text-neutral-800">
-              <a
-                href="#"
-                className="transition hover:text-neutral-950"
-                onClick={(event) => event.preventDefault()}
-              >
-                Home
-              </a>
-              <a
-                href="#"
-                className="transition hover:text-neutral-950"
-                onClick={(event) => event.preventDefault()}
-              >
-                Explorar
-              </a>
-              <a
-                href="#"
-                className="transition hover:text-neutral-950"
-                onClick={(event) => event.preventDefault()}
-              >
-                Info
-              </a>
-            </nav>
+    <div className="flex h-screen w-screen flex-col overflow-hidden bg-neutral-50">
+      <header className="flex h-[10%] min-h-[56px] items-center justify-between px-4">
+        <div className="flex items-center gap-3 rounded-full bg-white/80 px-3 py-2 shadow-sm backdrop-blur">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-neutral-900 text-sm font-semibold text-white">
+            P
           </div>
-          <div className="hidden rounded-full bg-white/70 px-3 py-2 text-xs font-medium text-neutral-700 shadow-sm backdrop-blur sm:block">
-            Concepción · En vivo
-          </div>
+          <nav className="flex items-center gap-4 text-sm text-neutral-800">
+            <a
+              href="#"
+              className="transition hover:text-neutral-950"
+              onClick={(event) => event.preventDefault()}
+            >
+              Home
+            </a>
+            <a
+              href="#"
+              className="transition hover:text-neutral-950"
+              onClick={(event) => event.preventDefault()}
+            >
+              Explorar
+            </a>
+            <a
+              href="#"
+              className="transition hover:text-neutral-950"
+              onClick={(event) => event.preventDefault()}
+            >
+              Info
+            </a>
+          </nav>
+        </div>
+        <div className="hidden rounded-full bg-white/80 px-3 py-2 text-xs font-medium text-neutral-700 shadow-sm backdrop-blur sm:block">
+          Concepción · En vivo
         </div>
       </header>
+
+      <div className="relative h-[70%] w-full">
+        <div ref={mapContainerRef} className="h-full w-full" />
+      </div>
 
       {/* Marker styles are injected here to keep changes local to this component. */}
       <style>{`
@@ -206,22 +208,21 @@ export default function MapView() {
         }
       `}</style>
 
-      {selectedModel ? (
-        <div
-          className="absolute inset-0 z-10"
-          onClick={() => setSelectedModel(null)}
-        >
-          <div className="absolute bottom-6 left-1/2 w-[94%] max-w-xl -translate-x-1/2">
-            <div onClick={(event) => event.stopPropagation()}>
-              <ProfileCard
-                name={selectedModel.name}
-                active={selectedModel.active}
-                description={selectedModel.description}
-              />
-            </div>
+      <div className="relative h-[22%] min-h-[140px] w-full">
+        {selectedModel ? (
+          <div className="h-full w-full">
+            <ProfileCard
+              name={selectedModel.name}
+              active={selectedModel.active}
+              description={selectedModel.description}
+            />
           </div>
-        </div>
-      ) : null}
+        ) : (
+          <div className="flex h-full items-center justify-center rounded-3xl border border-dashed border-neutral-300 bg-white/70 text-sm text-neutral-500">
+            Selecciona un pin para ver el perfil
+          </div>
+        )}
+      </div>
     </div>
   )
 }
