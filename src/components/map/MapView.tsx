@@ -89,7 +89,7 @@ export default function MapView() {
           setSelectedModel(model)
         })
 
-        return new mapboxgl.default.Marker({ element: el })
+        return new mapboxgl.default.Marker({ element: el, anchor: 'bottom' })
           .setLngLat([model.lng, model.lat])
           .addTo(mapRef.current!)
       })
@@ -155,14 +155,15 @@ export default function MapView() {
       {/* Marker styles are injected here to keep changes local to this component. */}
       <style>{`
         .model-marker {
-          width: 12px;
-          height: 12px;
+          width: 24px;
+          height: 24px;
           border-radius: 9999px;
           background: #16a34a;
           border: 2px solid #ffffff;
-          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+          box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
           cursor: pointer;
           position: relative;
+          transform: translateZ(0);
         }
         .model-marker.is-inactive {
           background: #ef4444;
@@ -175,12 +176,33 @@ export default function MapView() {
           transform: translate(-50%, 2px);
           width: 0;
           height: 0;
-          border-left: 5px solid transparent;
-          border-right: 5px solid transparent;
-          border-top: 7px solid #16a34a;
+          border-left: 7px solid transparent;
+          border-right: 7px solid transparent;
+          border-top: 10px solid #16a34a;
         }
         .model-marker.is-inactive::after {
           border-top-color: #ef4444;
+        }
+        .model-marker.is-active::before {
+          content: '';
+          position: absolute;
+          inset: -8px;
+          border-radius: 9999px;
+          border: 2px solid rgba(22, 163, 74, 0.6);
+          animation: model-pulse 1.8s ease-out infinite;
+        }
+        @keyframes model-pulse {
+          0% {
+            transform: scale(0.7);
+            opacity: 0.8;
+          }
+          70% {
+            transform: scale(1.4);
+            opacity: 0;
+          }
+          100% {
+            opacity: 0;
+          }
         }
       `}</style>
 
